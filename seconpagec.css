@@ -1,0 +1,27 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 80px;
+    line-height: 30px;
+    
+}
+
+.imageDiv{
+   display: flex;
+   justify-content: center;
+   margin: 0 auto;
+   
+}
+img{
+    margin: 50px;
+    border-radius: 10px;
+    width: 500px;
+}
