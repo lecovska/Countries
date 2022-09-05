@@ -1,22 +1,43 @@
 
 // const url = "https://restcountries.com/v3.1/all";
+
+const search = document.querySelector("input")
 const main = document.createElement("div");
 main.className = "main";
-const divForInput = document.createElement("div")
-divForInput.className = "input"
-const searchInput = document.createElement("input");
-
-
-
-divForInput.append(searchInput)
-main.append(divForInput)
+// let regionDropDown= document.createElement("select");
+const regionItems = ["Europe", "America", "Africa", "Asia", "Oceania"];
+const output = document.querySelector(".output");
+const searchFilter = document.querySelector(".filter-input");
 
 document.body.append(main);
 
+window.addEventListener("load", fetchData);
+window.addEventListener("load", createCards);
+window.addEventListener("input", loadList);
+searchFilter.addEventListener("input", filter);
 
+function loadList() {
+    let temp = `<ul class="list-items">`;
+    regionItems.forEach((item) => { temp += `<li class="list-item">${item}</li>` }
+    );
+    temp += `</ul>`;
 
-window.addEventListener("load", fetchData)
-window.addEventListener("load", createCards)
+    output.innerHTML = temp;
+}
+
+function filter(event) {
+
+    let temp = "";
+    const result = regionItems.filter(item => item.includes(event.target.value));
+    console.log(regionItems);
+    if (result) {
+        let temp = `<ul class="list-items">`;
+        result.forEach((item) => { temp += `<li class="list-item">${item}</li>` }
+        );
+        temp += `</ul>`;
+    }
+    output.innerHTML = temp;
+}
 
 
 
@@ -24,12 +45,35 @@ function fetchData() {
     fetch("https://restcountries.com/v3.1/all")
         .then(res => res.json())
         .then(data => createCards(data))
+}
 
+search.addEventListener("input", () => {
+
+    if (search.value != "") {
+        search.value = search.value.toLowerCase();
+        fetchCountry(search.value)
+    } else {
+        fetchData();
+    }
+})
+
+function fetchCountry(input) {
+    fetch(`https://restcountries.com/v3.1/name/${input}`)
+        .then(res => res.json())
+        .then(data => createCards(data))
+}
+
+function fetchRegion(region) {
+    fetch(`https://restcountries.com/v3.1/region/${region}`)
+        .then(res => res.json())
+        .then(data => regionItems(data))
 }
 
 
 function createCards(data) {
-    
+
+    main.innerHTML = "";
+
     return data.forEach((e, i) => {
         var singleCard = document.createElement("div");
         var image = document.createElement("img");
@@ -45,26 +89,20 @@ function createCards(data) {
         popul.innerText = "Population: " + e.population;
         regions.innerText = "Region:  " + e.region;
         capitals.innerText = "Capital:  " + e.capital;
-        moreInfo.href= "./secondpageh.html";
+        moreInfo.href = "./secondpageh.html";
         moreInfo.target = "_blank";
-        moreInfo.innerText="click"
+        moreInfo.innerText = "click"
 
-        moreInfo.addEventListener("click", ()=>{localStorage.setItem("index", i)})
+        moreInfo.addEventListener("click", () => { localStorage.setItem("index", i) })
 
         singleCard.append(image, title, popul, regions, capitals, moreInfo)
-     
+
         main.append(singleCard);
 
-        searchInput.addEventListener("input", (e)=>{
-            
-            if( e.target.value== data.region){
-                return e;
-            }
-        })
-       
+
 
     });
-    
+
 }
 
 
