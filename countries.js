@@ -13,17 +13,17 @@ document.body.append(main);
 
 window.addEventListener("load", fetchData);
 window.addEventListener("load", createCards);
-window.addEventListener("input", loadList);
+// window.addEventListener("input", loadList);
 searchFilter.addEventListener("input", filter);
 
-function loadList() {
-    let temp = `<ul class="list-items">`;
-    regionItems.forEach((item) => { temp += `<li class="list-item">${item}</li>` }
-    );
-    temp += `</ul>`;
+// function loadList() {
+//     let temp = `<ul class="list-items">`;
+//     regionItems.forEach((item) => { temp += `<li class="list-item">${item}</li>` }
+//     );
+//     temp += `</ul>`;
 
-    output.innerHTML = temp;
-}
+//     output.innerHTML = temp;
+// }
 
 function filter(event) {
 
@@ -37,6 +37,7 @@ function filter(event) {
         temp += `</ul>`;
     }
     output.innerHTML = temp;
+    fetchRegion(event.target.value.toLowerCase())
 }
 
 
@@ -66,7 +67,7 @@ function fetchCountry(input) {
 function fetchRegion(region) {
     fetch(`https://restcountries.com/v3.1/region/${region}`)
         .then(res => res.json())
-        .then(data => regionItems(data))
+        .then(data => createCards(data))
 }
 
 
